@@ -1,0 +1,28 @@
+global
+  daemon
+  maxconn {{ env "HAPROXY_MAXCONN" }}
+
+defaults
+  mode {{ env "HAPROXY_MODE" }}
+  balance {{ env "HAPROXY_BALANCE" }}
+  {{ range ((env "HAPROXY_OPTIONS") | split "," )}}
+  {{ . }}
+  {{ end }}
+
+{{ range services }}
+{{ if (.Name | regexMatch (env "CONSUL_SERVICE_NAME_REGEX")) }}
+
+listen {{ .Name }}
+
+{{ if service .Name }}
+{{ with index ( service .Name ) 0 }}
+  {{ with $parts := .ID | split ":" }}{{ if ge (len $parts) 2 }}bind *:{{ index $parts 2 }}{{ end }}{{ end }}
+{{ end }}
+{{ end }}
+
+{{ range service .Name }}
+  server {{ .Node }}-{{ .Port }} {{ .Address }}:{{ .Port }} check inter 2s rise 3 fall 2 
+{{ end }}
+
+{{ end }}
+{{ end }}
