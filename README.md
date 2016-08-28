@@ -19,7 +19,7 @@ services:
       - SERVICE_NAME=whoami
   internal-service-proxy:
     image: lawrence0819/consul-haproxy
-    command: -consul 192.168.99.100:8500
+    command: -consul consul.service.consul:8500
     ports:
       - "8000"
     environment:
