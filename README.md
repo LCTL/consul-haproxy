@@ -103,5 +103,12 @@ docker run -d -P -e "SERVICE_NAME=whoami" jwilder/whoami
 | HAPROXY_MAXCONN       | `1024`                                                                                     |HAProxy maxconn  |
 | HAPROXY_MODE          | `tcp`                                                                                      |HAProxy mode |
 | HAPROXY_BALANCE       | `roundrobin`                                                                               |HAProxy balance |
-| HAPROXY_OPTIONS       | `timeout connect 3s,timeout server 3s,timeout client 3s,option redispatch,option tcp-check`|`,` as separator|
+| HAPROXY_CONNECT_TIMEOUT | `5s` | HAProxy connect timeout |
+| HAPROXY_SERVER_TIMEOUT | `60s` | HAProxy server connection timeout |
+| HAPROXY_CLIENT_TIMEOUT | `60s` | HAProxy client connection timeout |
+| HAPROXY_CHECK_TIMEOUT | `5s` | HAProxy health check timeout |
+| HAPROXY_CHECK_INTER | `2s` | interval between two consecutive health checks |
+| HAPROXY_CHECK_RISE | `2` | operational after <count> consecutive successful health checks |
+| HAPROXY_CHECK_FALL | `2` | dead after <count> consecutive unsuccessful health checks |
+| HAPROXY_OPTIONS       | `option redispatch,option tcp-check` | `,` as separator |
 | CONSUL_SERVICE_NAME_REGEX | `.*`                                                                                   |for filter unnecessary service in proxy| 
