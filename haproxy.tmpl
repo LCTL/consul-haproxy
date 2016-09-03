@@ -5,6 +5,10 @@ global
 defaults
   mode {{ env "HAPROXY_MODE" }}
   balance {{ env "HAPROXY_BALANCE" }}
+  timeout connect {{ env "HAPROXY_CONNECT_TIMEOUT" }}
+  timeout server {{ env "HAPROXY_SERVER_TIMEOUT" }}
+  timeout client {{ env "HAPROXY_CLIENT_TIMEOUT" }}
+  timeout check {{ env "HAPROXY_CHECK_TIMEOUT" }}
   {{ range ((env "HAPROXY_OPTIONS") | split "," )}}
   {{ . }}
   {{ end }}
@@ -21,7 +25,7 @@ listen {{ .Name }}
 {{ end }}
 
 {{ range service .Name }}
-  server {{ .Node }}-{{ .Port }} {{ .Address }}:{{ .Port }} check inter 2s rise 3 fall 2 
+  server {{ .Node }}-{{ .Port }} {{ .Address }}:{{ .Port }} check inter {{ env "HAPROXY_CHECK_INTER" }} rise {{ env "HAPROXY_CHECK_RISE" }} fall  {{ env "HAPROXY_CHECK_FALL" }}
 {{ end }}
 
 {{ end }}

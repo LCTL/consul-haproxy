@@ -1,11 +1,18 @@
-FROM haproxy:1.6.8-alpine
+FROM haproxy:1.6.9-alpine
 
 ENV CT_VERSION 0.15.0
 ENV CONSUL_SERVICE_NAME_REGEX .*
 ENV HAPROXY_MAXCONN 1024
 ENV HAPROXY_MODE tcp
 ENV HAPROXY_BALANCE roundrobin
-ENV HAPROXY_OPTIONS timeout connect 3s,timeout server 3s,timeout client 3s,option redispatch,option tcp-check
+ENV HAPROXY_CONNECT_TIMEOUT 5s
+ENV HAPROXY_SERVER_TIMEOUT 60s
+ENV HAPROXY_CLIENT_TIMEOUT 60s
+ENV HAPROXY_CHECK_TIMEOUT 5s
+ENV HAPROXY_CHECK_INTER 2s
+ENV HAPROXY_CHECK_RISE 2
+ENV HAPROXY_CHECK_FALL 2
+ENV HAPROXY_OPTIONS option redispatch,option tcp-check
 
 RUN apk --no-cache add --update unzip
 
